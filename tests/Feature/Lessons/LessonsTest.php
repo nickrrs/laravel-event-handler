@@ -152,8 +152,33 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    // public function testUserAchievementsEndpointWithAchievementThroughLessons() {
+    public function testUserAchievementsEndpointWithAchievementThroughLessons() {
+        Event::fakeExcept([
+            LessonWatched::class,
+            AchievementUnlocked::class,
+            BadgeUnlocked::class
+        ]);
 
-    // }
+        $user = User::factory()->create();
+        $lesson = Lesson::factory()->create();
+
+        event(new LessonWatched($lesson, $user));
+
+        $response = $this->getJson("/users/{$user->id}/achievements");
+
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'unlocked_achievements' => [
+                        'First Lesson Watched'
+                     ],
+                     'next_available_achievements' => [
+                        '5 Lessons Watched',
+                        'First Comment Written'
+                     ],
+                     'current_badge' => 'Beginner',
+                     'next_badge' => 'Intermediate', 
+                     'remaing_to_unlock_next_badge' => 3
+                 ]);
+    }
     
 }

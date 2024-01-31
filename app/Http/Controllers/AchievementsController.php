@@ -3,18 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\Achievements\AchievementsService;
+use App\Services\Badges\BadgesService;
 use Illuminate\Http\Request;
 
-class AchievementsController extends Controller
-{
+class AchievementsController extends Controller {
+    
+    private $achievementService;
+    private $badgeService;
+
+    public function __construct(AchievementsService $achievementService, BadgesService $badgeService){
+        $this->achievementService = $achievementService;
+        $this->badgeService = $badgeService;
+    }
+
     public function index(User $user)
     {
+        $unlockedAchievements = $this->achievementService->getUnlockedAchievements($user);
+        $nextAvailableAchievements = $this->achievementService->getNextAvailableAchievements($user);
+        $currentBadge = $this->badgeService->getCurrentBadge($user);
+        $nextBadge = $this->badgeService->getNextBadge($user);
+        $remainingToUnlockNextBadge = $this->badgeService->getRemainingToUnlockNextBadge($user, $nextBadge);
+        
         return response()->json([
-            'unlocked_achievements' => [],
-            'next_available_achievements' => [],
-            'current_badge' => '',
-            'next_badge' => '',
-            'remaing_to_unlock_next_badge' => 0
+            'unlocked_achievements' => $unlockedAchievements,
+            'next_available_achievements' => $nextAvailableAchievements,
+            'current_badge' => $currentBadge,
+            'next_badge' => $nextBadge,
+            'remaing_to_unlock_next_badge' => $remainingToUnlockNextBadge
         ]);
     }
 }
