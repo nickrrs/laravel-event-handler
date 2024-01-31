@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\LessonWatched;
+use App\Listeners\LessonWatchedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +19,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        \App\Events\LessonWatched::class => [
+            \App\Listeners\LessonWatchedListener::class,
+        ],
+        \App\Events\AchievementUnlocked::class => [
+            \App\Listeners\AchievementUnlockedListener::class,
+        ],
+        \App\Events\BadgeUnlocked::class => [
+            \App\Listeners\BadgeUnlockedListener::class,
         ],
     ];
 
