@@ -42,7 +42,7 @@ class LessonWatchedListener
         $this->usersService->storeUserLesson($event);
     }
     private function handleAchievements(User $user){
-       $achievement = $this->achievementService->checkNewAchievement($user);
+       $achievement = $this->achievementService->checkNewLessonAchievement($user);
  
         if(count($achievement) > 0 ){
           AchievementUnlocked::dispatch($user, $achievement['name']);

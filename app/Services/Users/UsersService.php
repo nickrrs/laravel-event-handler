@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Repository\Users\UsersRepository;
 

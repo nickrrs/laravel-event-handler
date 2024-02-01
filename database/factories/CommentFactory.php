@@ -27,4 +27,11 @@ class CommentFactory extends Factory
             'user_id' => User::factory(),
         ];
     }
+
+    public function setUser(User $user)
+    {
+        return $this->state([
+            'user_id' => $user->id,
+        ]);
+    }
 }

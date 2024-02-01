@@ -5,6 +5,7 @@ namespace Tests\Feature\Lessons;
 use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
 use App\Models\Achievement;
+use Database\Factories\AchievementFactory;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Lesson;
@@ -35,6 +36,7 @@ class LessonsTest extends TestCase
     }
 
     public function testFiveLessonsWatchedAchievement() {
+        //statically forcing the achievement of 5 comments
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
@@ -127,27 +129,30 @@ class LessonsTest extends TestCase
     }
 
     public function testReceiveAnIntermediateBadgeFromLessonsNewAchievement(){
+
+        AchievementFactory::new()->resetCounters();
+
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
             BadgeUnlocked::class
         ]);
 
-        $user = User::factory()->create();
+        $newUser = User::factory()->create();
         //set a pre-defined "static/fake" achivements quantity to the user
-        $achievement = Achievement::factory()->count(3)->setUser($user)->create();
+        $achievement = Achievement::factory()->count(3)->achievements()->setUser($newUser)->create();
 
         $lessons = Lesson::factory()->count(49)->create();
         foreach ($lessons as $lesson) {
-            $user->watched()->attach($lesson->id, ['watched' => true]);
+            $newUser->watched()->attach($lesson->id, ['watched' => true]);
         }
 
         //the user receive a new achievement after watched 50 lessons
         $newLesson = Lesson::factory()->create();
-        event(new LessonWatched($newLesson, $user));
+        event(new LessonWatched($newLesson, $newUser));
 
         $this->assertDatabaseHas('badges', [
-            'user_id' => $user->id,
+            'user_id' => $newUser->id,
             'name' => 'Intermediate'
         ]);
     }

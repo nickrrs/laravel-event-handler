@@ -2,8 +2,9 @@
 
 namespace App\Services\Achievements;
 use App\Enums\AchievementsEnum;
-use App\Enums\CommentsEnum;
+use App\Enums\CommentsAchievementEnum;
 use App\Models\Achievement;
+use App\Models\Comment;
 use App\Models\User;
 
 class AchievementsService {
@@ -21,15 +22,15 @@ class AchievementsService {
         ];
     
         $this->commentAchievements = [
-            1 => CommentsEnum::FirtComment->value,
-            3 => CommentsEnum::ThreeComments->value,
-            5 => CommentsEnum::FiveComments->value,
-            10 => CommentsEnum::TenComments->value,
-            20 => CommentsEnum::TwentyComments->value
+            1 => CommentsAchievementEnum::FirtComment->value,
+            3 => CommentsAchievementEnum::ThreeComments->value,
+            5 => CommentsAchievementEnum::FiveComments->value,
+            10 => CommentsAchievementEnum::TenComments->value,
+            20 => CommentsAchievementEnum::TwentyComments->value
         ];
     }
 
-    public function checkNewAchievement($user): array {
+    public function checkNewLessonAchievement($user): array {
         $userLessonsCount = $user->watched->count();
 
         if($userLessonsCount == 0){
@@ -38,6 +39,22 @@ class AchievementsService {
 
         foreach ($this->achievements as $numberOfLessons => $achievementName) {
             if($userLessonsCount == $numberOfLessons && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists()){
+                return ['name' => $achievementName];
+            }
+        }
+
+        return [];
+    }
+
+    public function checkNewCommentAchievement($user): array {
+        $userCommentsCount = $user->comments->count();
+
+        if($userCommentsCount == 0){
+            return [];
+        }
+
+        foreach ($this->commentAchievements as $numberOfComments => $achievementName) {
+            if($userCommentsCount == $numberOfComments && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists()){
                 return ['name' => $achievementName];
             }
         }

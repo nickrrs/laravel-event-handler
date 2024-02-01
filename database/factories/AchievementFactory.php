@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\AchievementsEnum;
-use App\Enums\CommentsEnum;
+use App\Enums\CommentsAchievementEnum;
 use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +21,9 @@ class AchievementFactory extends Factory
      * @var string
      */
     protected $model = Achievement::class;
-
+    private static $achievementsCount = 0;
+    private static $commentsCount = 0;
+    private $enumType = 'achievement';
     /**
      * Define the model's default state.
      *
@@ -29,18 +31,40 @@ class AchievementFactory extends Factory
      */
     public function definition()
     {
-        $enumValues = array_merge(
-            AchievementsEnum::cases(), 
-            CommentsEnum::cases()
-        );
-        $enumValues = array_map(fn($enum) => $enum->value, $enumValues);
+
+        if ($this->enumType == 'comment') {
+            $values = CommentsAchievementEnum::cases();
+            $value = $values[min(self::$commentsCount, count($values) - 1)]->value;
+            self::$commentsCount++;
+        }
+        
+        $values = AchievementsEnum::cases();
+        $value = $values[min(self::$achievementsCount, count($values) - 1)]->value;
+        self::$achievementsCount++;
 
         return [
-            'name' => $this->faker->randomElement($enumValues),
+            'name' => $value,
             'user_id' => User::factory(),
         ];
     }
 
+    public function resetCounters()
+    {
+        self::$achievementsCount = 0;
+        self::$commentsCount = 0;
+    }
+
+    public function achievements()
+    {
+        $this->enumType = 'achievement';
+        return $this;
+    }
+
+    public function comments()
+    {
+        $this->enumType = 'comment';
+        return $this;
+    }
 
     public function setUser(User $user)
     {
