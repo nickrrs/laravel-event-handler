@@ -7,8 +7,7 @@ use App\Enums\CommentsAchievementEnum;
 use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,6 +23,7 @@ class AchievementFactory extends Factory
     private static $achievementsCount = 0;
     private static $commentsCount = 0;
     private static $enumType = 'achievement';
+    
     /**
      * Define the model's default state.
      *

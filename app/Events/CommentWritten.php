@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Comment;
-use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 

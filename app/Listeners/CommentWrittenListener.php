@@ -38,7 +38,8 @@ class CommentWrittenListener
         $this->handleBadges($user);
     }
 
-    private function handleAchievements(User $user){
+    private function handleAchievements(User $user)
+    {
         $achievement = $this->achievementService->checkNewCommentAchievement($user);
      
         if(count($achievement) > 0 ){
@@ -47,7 +48,8 @@ class CommentWrittenListener
  
     }
 
-    private function handleBadges(User $user){
+    private function handleBadges(User $user)
+    {
         $badge = $this->badgesService->checkNewBadge($user);
        
         if(count($badge) > 0 ){

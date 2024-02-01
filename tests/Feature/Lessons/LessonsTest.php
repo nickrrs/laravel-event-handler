@@ -11,7 +11,6 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Lesson;
 use App\Events\LessonWatched;
-use App\Models\Badge;
 use App\Models\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -20,7 +19,8 @@ class LessonsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testFirstLessonWatchedAchievement() {
+    public function testFirstLessonWatchedAchievement() 
+    {
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
@@ -38,7 +38,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testFiveLessonsWatchedAchievement() {
+    public function testFiveLessonsWatchedAchievement() 
+    {
         //statically forcing the achievement of 5 comments
         Event::fakeExcept([
             LessonWatched::class,
@@ -62,7 +63,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testTenLessonsWatchedAchievement(){
+    public function testTenLessonsWatchedAchievement()
+    {
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
@@ -85,7 +87,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testTwentyFiveLessonsWatchedAchievement(){
+    public function testTwentyFiveLessonsWatchedAchievement()
+    {
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
@@ -108,7 +111,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testFifthLessonsWatchedAchievement(){
+    public function testFifthLessonsWatchedAchievement()
+    {
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,
@@ -131,7 +135,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testReceiveAnIntermediateBadgeFromLessonsNewAchievement(){
+    public function testReceiveAnIntermediateBadgeFromLessonsNewAchievement()
+    {
 
         AchievementFactory::new()->resetCounters();
 
@@ -160,7 +165,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testReceiveAnAdvancedBadgeFromLessonsAndCommentsNewAchievements(){
+    public function testReceiveAnAdvancedBadgeFromLessonsAndCommentsNewAchievements()
+    {
         AchievementFactory::new()->resetCounters();
 
         Event::fakeExcept([
@@ -197,7 +203,8 @@ class LessonsTest extends TestCase
         ]);
     }
 
-    public function testUserAchievementsEndpointWithAchievementThroughLessons() {
+    public function testUserAchievementsEndpointWithAchievementThroughLessons() 
+    {
         Event::fakeExcept([
             LessonWatched::class,
             AchievementUnlocked::class,

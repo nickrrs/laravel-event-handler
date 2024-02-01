@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
 use App\Events\LessonWatched;
-use App\Models\Achievement;
 use App\Models\User;
 use App\Services\Achievements\AchievementsService;
 use App\Services\Badges\BadgesService;
@@ -38,10 +37,12 @@ class LessonWatchedListener
         $this->handleBadges($user);
     }
 
-    private function handleLessonWatched($event){
+    private function handleLessonWatched($event)
+    {
         $this->usersService->storeUserLesson($event);
     }
-    private function handleAchievements(User $user){
+    private function handleAchievements(User $user)
+    {
        $achievement = $this->achievementService->checkNewLessonAchievement($user);
  
         if(count($achievement) > 0 ){

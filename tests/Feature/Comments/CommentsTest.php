@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Event;
 class CommentsTest extends TestCase {
     use RefreshDatabase;
 
-    public function testFirstCommentAchievement() {
+    public function testFirstCommentAchievement() 
+    {
         Event::fakeExcept([
             CommentWritten::class,
             AchievementUnlocked::class,
@@ -34,7 +35,8 @@ class CommentsTest extends TestCase {
         ]);
     }
 
-    public function testThreeCommentsAchievement() {
+    public function testThreeCommentsAchievement() 
+    {
         //statically forcing the achievement of 3 comments
         Event::fakeExcept([
             CommentWritten::class,
@@ -55,7 +57,8 @@ class CommentsTest extends TestCase {
         ]);
     }
 
-    public function testFiveCommentsAchievement() {
+    public function testFiveCommentsAchievement() 
+    {
         Event::fakeExcept([
             CommentWritten::class,
             AchievementUnlocked::class,
@@ -74,7 +77,8 @@ class CommentsTest extends TestCase {
         ]);
     }
 
-    public function testTenCommentsAchievement() {
+    public function testTenCommentsAchievement() 
+    {
         Event::fakeExcept([
             CommentWritten::class,
             AchievementUnlocked::class,
@@ -93,7 +97,8 @@ class CommentsTest extends TestCase {
         ]);
     }
 
-    public function testTwentyCommentsAchievement() {
+    public function testTwentyCommentsAchievement() 
+    {
         Event::fakeExcept([
             CommentWritten::class,
             AchievementUnlocked::class,
@@ -111,7 +116,8 @@ class CommentsTest extends TestCase {
             'name' => '20 Comments Written'
         ]);
     }
-    public function testReceiveAnIntermediateBadgeFromCommentsNewAchievement(){
+    public function testReceiveAnIntermediateBadgeFromCommentsNewAchievement()
+    {
 
         AchievementFactory::new()->resetCounters();
 
@@ -136,7 +142,8 @@ class CommentsTest extends TestCase {
         ]);
     }
 
-    public function testUserAchievementsEndpointWithAchievementThroughComments() {
+    public function testUserAchievementsEndpointWithAchievementThroughComments() 
+    {
         Event::fakeExcept([
             CommentWritten::class,
             AchievementUnlocked::class,

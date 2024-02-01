@@ -26,7 +26,8 @@ class AchievementUnlockedListener
         $this->handleNewAchievement($event);
     }
 
-    private function handleNewAchievement($event){
+    private function handleNewAchievement($event)
+    {
         $this->usersService->storeNewAchievement($event);
     }
 }

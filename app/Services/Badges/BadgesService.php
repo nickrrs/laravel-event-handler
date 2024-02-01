@@ -4,14 +4,12 @@ namespace App\Services\Badges;
 
 use App\Enums\BadgesEnum;
 use App\Models\User;
-use App\Repository\Users\UsersRepository;
 
 class BadgesService {
 
-    private $usersRepository;
     protected $badges;
-    public function __construct(UsersRepository $usersRepository){
-        $this->usersRepository = $usersRepository;
+    public function __construct()
+    {
         $this->badges = [
             0 => BadgesEnum::Beginner->value,
             4 => BadgesEnum::Intermediate->value,
@@ -20,7 +18,8 @@ class BadgesService {
         ];
     }
 
-    public function checkNewBadge(User $user){
+    public function checkNewBadge(User $user)
+    {
         $totalAchievements = $user->achievements()->count();
         $currentBadge = $user->badges()->latest('id')->first();
         $newBadgeName = $this->getBadgeNameBasedOnAchievements($totalAchievements);
@@ -30,7 +29,8 @@ class BadgesService {
         }
     }
 
-    private function getBadgeNameBasedOnAchievements($totalAchievements){
+    private function getBadgeNameBasedOnAchievements($totalAchievements)
+    {
         if ($totalAchievements >= 10) {
             return 'Master';
         }
@@ -47,7 +47,8 @@ class BadgesService {
         
     }
 
-    public function getCurrentBadge(User $user): string {
+    public function getCurrentBadge(User $user): string 
+    {
         $achievementCount = $user->achievements()->count();
         foreach ($this->badges as $number => $name) {
             if ($achievementCount >= $number) {
@@ -58,7 +59,8 @@ class BadgesService {
         return $currentBadge ?? 'Beginner';
     }
 
-    public function getNextBadge(User $user): string {
+    public function getNextBadge(User $user): string 
+    {
         $achievementCount = $user->achievements()->count();
         foreach ($this->badges as $number => $name) {
             if ($achievementCount < $number) {
@@ -69,7 +71,8 @@ class BadgesService {
         return 'Master';
     }
 
-    public function getRemainingToUnlockNextBadge(User $user, string $nextBadge): int {
+    public function getRemainingToUnlockNextBadge(User $user, string $nextBadge): int 
+    {
         $achievementCount = $user->achievements()->count();
         $achievementsNeededForNextBadge = array_search($nextBadge, $this->badges);
 

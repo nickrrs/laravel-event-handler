@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\BadgeUnlocked;
 use App\Services\Users\UsersService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class BadgeUnlockedListener
 {
@@ -27,7 +25,8 @@ class BadgeUnlockedListener
         $this->handleNewBadge($event);
     }
 
-    private function handleNewBadge($event){
+    private function handleNewBadge($event)
+    {
         $this->usersService->storeNewBadge($event);
     }
 }

@@ -1,7 +1,8 @@
 <?php 
 namespace App\Enums;
 
-enum CommentsAchievementEnum:string {
+enum CommentsAchievementEnum:string 
+{
     case FirtComment = 'First Comment Written';
     case ThreeComments = '3 Comments Written';
     case FiveComments = '5 Comments Written';
