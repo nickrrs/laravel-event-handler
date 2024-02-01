@@ -4,6 +4,8 @@ namespace App\Services\Users;
 
 use App\Models\User;
 use App\Repository\Users\UsersRepository;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class UsersService {
 
@@ -14,21 +16,36 @@ class UsersService {
         $this->usersRepository = $usersRepository;
     }
 
-    public function storeUserLesson($eventPayload): User 
+    public function storeUserLesson($eventPayload) 
     {
-        $userLesson = $this->usersRepository->storeUserLesson($eventPayload);
-        return $userLesson;
+        try{
+            $userLesson = $this->usersRepository->storeUserLesson($eventPayload);
+            return $userLesson;
+        } catch (Exception $e) {
+            Log::alert("Error while trying to save a new lesson for the user {$eventPayload->user->id}: {$e->getMessage()}");
+            return $e->getMessage();
+        }
     }
 
     public function storeNewAchievement($eventPayload)
     {
-        $userAchievement = $this->usersRepository->storeNewAchievement($eventPayload);
-        return $userAchievement;
+        try{
+            $userAchievement = $this->usersRepository->storeNewAchievement($eventPayload);
+            return $userAchievement;
+        } catch (Exception $e) {
+            Log::alert("Error while trying to save a new achievement for the user {$eventPayload->user->id}: {$e->getMessage()}");
+            return $e->getMessage();
+        }
     }
 
     public function storeNewBadge($eventPayload)
     {
-        $userBadge = $this->usersRepository->storeNewBadge($eventPayload);
-        return $userBadge;
+        try{
+            $userBadge = $this->usersRepository->storeNewBadge($eventPayload);
+            return $userBadge;
+        } catch (Exception $e) {
+            Log::alert("Error while trying to save a new badge for the user {$eventPayload->user->id}: {$e->getMessage()}");
+            return $e->getMessage();
+        }
     }
 }

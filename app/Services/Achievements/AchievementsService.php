@@ -5,6 +5,8 @@ use App\Enums\AchievementsEnum;
 use App\Enums\CommentsAchievementEnum;
 use App\Models\Achievement;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class AchievementsService {
 
@@ -32,38 +34,49 @@ class AchievementsService {
 
     public function checkNewLessonAchievement($user): array 
     {
-        $userLessonsCount = $user->watched->count();
+        try{
+            $userLessonsCount = $user->watched->count();
 
-        if($userLessonsCount === 0){
-            return [];
-        }
-
-        foreach ($this->achievements as $numberOfLessons => $achievementName) {
-            if($userLessonsCount === $numberOfLessons && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists())
-            {
-                return ['name' => $achievementName];
+            if($userLessonsCount === 0){
+                throw new Exception("The user hasn't watched any lesson.");
             }
-        }
 
-        return [];
+            foreach ($this->achievements as $numberOfLessons => $achievementName) {
+                if($userLessonsCount === $numberOfLessons && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists())
+                {
+                    return ['name' => $achievementName];
+                }
+            }
+
+            return [];
+
+        } catch (Exception $e) {
+            Log::alert("Error while trying to check a new lesson achievement for the user {$user->id}: {$e->getMessage()}");
+            return [$e->getMessage()];
+        }
     }
 
     public function checkNewCommentAchievement($user): array 
     {
-        $userCommentsCount = $user->comments->count();
+        try{
+            $userCommentsCount = $user->comments->count();
 
-        if($userCommentsCount === 0){
-            return [];
-        }
-
-        foreach ($this->commentAchievements as $numberOfComments => $achievementName) {
-            if($userCommentsCount === $numberOfComments && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists())
-            {
-                return ['name' => $achievementName];
+            if($userCommentsCount === 0){
+                throw new Exception("The user hasn't made any comment.");
             }
-        }
 
-        return [];
+            foreach ($this->commentAchievements as $numberOfComments => $achievementName) {
+                if($userCommentsCount === $numberOfComments && !Achievement::where('user_id', $user->id)->where('name', $achievementName)->exists())
+                {
+                    return ['name' => $achievementName];
+                }
+            }
+
+            return [];
+        } catch (Exception $e) {
+            Log::alert("Error while trying to check a new comment achievement for the user {$user->id}: {$e->getMessage()}");
+            return [$e->getMessage()];
+        }
     }
 
     public function getUnlockedAchievements(User $user): array
