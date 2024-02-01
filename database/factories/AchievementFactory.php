@@ -23,7 +23,7 @@ class AchievementFactory extends Factory
     protected $model = Achievement::class;
     private static $achievementsCount = 0;
     private static $commentsCount = 0;
-    private $enumType = 'achievement';
+    private static $enumType = 'achievement';
     /**
      * Define the model's default state.
      *
@@ -31,16 +31,15 @@ class AchievementFactory extends Factory
      */
     public function definition()
     {
-
-        if ($this->enumType == 'comment') {
+        if (self::$enumType === 'achievement') {
+            $values = AchievementsEnum::cases();
+            $index = min(self::$achievementsCount++, count($values) - 1);
+        } else {
             $values = CommentsAchievementEnum::cases();
-            $value = $values[min(self::$commentsCount, count($values) - 1)]->value;
-            self::$commentsCount++;
+            $index = min(self::$commentsCount++, count($values) - 1);
         }
-        
-        $values = AchievementsEnum::cases();
-        $value = $values[min(self::$achievementsCount, count($values) - 1)]->value;
-        self::$achievementsCount++;
+
+        $value = $values[$index]->value;
 
         return [
             'name' => $value,
@@ -52,17 +51,18 @@ class AchievementFactory extends Factory
     {
         self::$achievementsCount = 0;
         self::$commentsCount = 0;
+        return $this; // Retorna a instância da factory
     }
 
     public function achievements()
     {
-        $this->enumType = 'achievement';
+        self::$enumType = 'achievement';
         return $this;
     }
 
     public function comments()
     {
-        $this->enumType = 'comment';
+        self::$enumType = 'comment';
         return $this;
     }
 
