@@ -30,7 +30,7 @@ class AchievementsController extends Controller {
             'next_available_achievements' => $nextAvailableAchievements,
             'current_badge' => $currentBadge,
             'next_badge' => $nextBadge,
-            'remaing_to_unlock_next_badge' => $remainingToUnlockNextBadge
+            'remaining_to_unlock_next_badge' => $remainingToUnlockNextBadge
         ]);
     }
 }

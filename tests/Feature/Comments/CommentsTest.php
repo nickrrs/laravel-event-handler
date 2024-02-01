@@ -158,17 +158,17 @@ class CommentsTest extends TestCase {
         $response = $this->getJson("/users/{$user->id}/achievements");
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'unlocked_achievements' => [
-                        'First Comment Written'
-                     ],
-                     'next_available_achievements' => [
-                        'First Lesson Watched',
-                        '3 Comments Written'
-                     ],
-                     'current_badge' => 'Beginner',
-                     'next_badge' => 'Intermediate', 
-                     'remaing_to_unlock_next_badge' => 3
-                 ]);
+        ->assertJson([
+            'unlocked_achievements' => [
+            'First Comment Written'
+            ],
+            'next_available_achievements' => [
+            'First Lesson Watched',
+            '3 Comments Written'
+            ],
+            'current_badge' => 'Beginner',
+            'next_badge' => 'Intermediate', 
+            'remaining_to_unlock_next_badge' => 3
+        ]);
     }
 }
